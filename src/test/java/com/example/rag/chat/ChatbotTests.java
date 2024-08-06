@@ -42,7 +42,8 @@ public class ChatbotTests {
 
         var relevancyEvaluator = new RelevancyEvaluator(this.builder);
 
-        EvaluationRequest evaluationRequest = new EvaluationRequest(question, List.of(), chatResponse);
+        EvaluationRequest evaluationRequest = new EvaluationRequest(question, List.of(), chatResponse.toString());
+
         EvaluationResponse evaluationResponse = relevancyEvaluator.evaluate(evaluationRequest);
         assertTrue(evaluationResponse.isPass(), "Response is not relevant to the question");
 
