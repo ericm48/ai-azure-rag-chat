@@ -42,6 +42,10 @@ public class ChatbotTests {
 
         var relevancyEvaluator = new RelevancyEvaluator(this.builder);
 
+        // For M1:
+        //EvaluationRequest evaluationRequest = new EvaluationRequest(question, List.of(), chatResponse);
+
+        // For Snapshot:
         EvaluationRequest evaluationRequest = new EvaluationRequest(question, List.of(), chatResponse.toString());
 
         EvaluationResponse evaluationResponse = relevancyEvaluator.evaluate(evaluationRequest);

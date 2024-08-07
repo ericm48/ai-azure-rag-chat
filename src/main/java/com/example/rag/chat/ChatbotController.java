@@ -1,5 +1,7 @@
 package com.example.rag.chat;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -18,6 +20,8 @@ import java.util.Map;
 @RequestMapping("/rag/chatbot")
 public class ChatbotController {
 
+	private static final Logger methIDquery = LoggerFactory.getLogger(ChatbotController.class.getName() + ".query()");
+
 	private final ChatClient chatClient;
 
 	private final VectorStore vectorStore;
@@ -32,14 +36,32 @@ public class ChatbotController {
 			@RequestParam(value = "question", defaultValue = "What is the purpose of Carina?") String question,
 			@RequestParam(value = "version", defaultValue = "2") String version) {
 
+		Logger logger = methIDquery;
+
+		String returnValue = null;
+
+		logger.debug("Begins...");
+
+		logger.info("question: " + question);
+		logger.info("version: " + version);
+
 		var filterExpression = "version == " + version; // portable across all vector stores
-		System.out.println(filterExpression);
-		return this.chatClient
+
+ 		logger.info("filterExpression: " + filterExpression);
+
+		returnValue = this.chatClient
 				.prompt()
 				.advisors(new QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults().withFilterExpression(filterExpression)))
 				.user(question)
 				.call()
 				.content();
+
+		logger.debug("returnValue: " + returnValue);
+
+		logger.debug("Ends...");
+
+		return (returnValue);
+
 	}
 
 
